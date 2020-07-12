@@ -11,7 +11,8 @@ namespace CopyMod
 	{
 		internal static string settingsFile { get; private set; } = Application.StartupPath + @"\app.cfg";
 		internal static string sourceDir;
-		internal static string destDir;
+		internal static string sincDir;
+		internal static string modDir;
 		internal static bool overwrite;
 		internal static string[] filetypes = new string[0];
 
@@ -51,13 +52,15 @@ namespace CopyMod
 					return false;
 				}
 				sourceDir = flines[0];
-				destDir = flines[1];
-				overwrite = bool.Parse(flines[2]);
-				filetypes = flines[3].Split(',');
+				sincDir = flines[1];
+				modDir = flines[2];
+				overwrite = bool.Parse(flines[3]);
+				filetypes = flines[4].Split(',');
 				return true;
 			}
 			sourceDir = "";
-			destDir = "";
+			sincDir = "";
+			modDir = "";
 			overwrite = false;
 			filetypes = new string[0];
 			return true;
@@ -77,7 +80,7 @@ namespace CopyMod
 					ftstr += "," + ft;
 				}
 			}
-			string[] flines = new string[4] {sourceDir, destDir, overwrite.ToString(), ftstr};
+			string[] flines = new string[5] {sourceDir, sincDir, modDir, overwrite.ToString(), ftstr};
 			if (File.Exists(settingsFile))
 				File.Delete(settingsFile);
 			File.WriteAllLines(settingsFile, flines);
@@ -95,7 +98,12 @@ namespace CopyMod
 				MessageBox.Show("You need to choose a source directory!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
 			}
-			if (destDir == "")
+			if (sincDir == "")
+			{
+				MessageBox.Show("You need to choose the directory of the Software INC mod folder!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			if(modDir == "")
 			{
 				MessageBox.Show("You need to choose a destination directory!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
@@ -105,15 +113,16 @@ namespace CopyMod
 				MessageBox.Show("The source directory couldn't be found! Did you delete it?", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
 			}
-			if (!Directory.Exists(destDir))
-				Directory.CreateDirectory(destDir);
+			string finalDir = Path.Combine(sincDir, modDir);
+			if (!Directory.Exists(finalDir))
+				Directory.CreateDirectory(finalDir);
 
 			var files = (from file in Directory.EnumerateFiles(sourceDir,"*",SearchOption.TopDirectoryOnly)
 						 where extensions.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)
 						 select new
 						 {
 							 Source = file,
-							 Destination = Path.Combine(destDir, Path.GetFileName(file))
+							 Destination = Path.Combine(finalDir, Path.GetFileName(file))
 						 });
 			foreach (var file in files)
 			{

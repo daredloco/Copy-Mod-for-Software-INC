@@ -5,7 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Microsoft.Win32;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 namespace CopyMod
 {
@@ -19,8 +22,29 @@ namespace CopyMod
 		private void Main_Load(object sender, EventArgs e)
 		{
 			Backend.LoadSettings();
+			if(Backend.sincDir == "")
+			{
+				if(MessageBox.Show("It seems like you didn't set a destination folder,\ndo you want the Application to search the Software INC installation for you?","Destination Folder",MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+				{
+					object regreturn = Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Valve\Steam", "SteamPath", null);
+					if(regreturn != null)
+					{
+						string steaminstall = regreturn as string;
+						if(steaminstall != null)
+						{
+							steaminstall = Path.Combine(steaminstall, "steamapps/common/Software Inc/DLLMods").Replace('/','\\');						
+							tb_dest.Text = steaminstall;
+						}
+					}
+					else
+					{
+						MessageBox.Show("Couldn't find Software Inc installation directory!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+				}
+			}
 			tb_source.Text = Backend.sourceDir;
-			tb_dest.Text = Backend.destDir;
+			tb_dest.Text = Backend.sincDir;
+			tb_modfolder.Text = Backend.modDir;
 			cb_overwrite.Checked = Backend.overwrite;
 			foreach(string ftype in Backend.filetypes)
 			{
@@ -46,7 +70,12 @@ namespace CopyMod
 
 		private void tb_dest_TextChanged(object sender, EventArgs e)
 		{
-			Backend.destDir = tb_dest.Text;
+			Backend.sincDir = tb_dest.Text;
+		}
+
+		private void tb_mod_TextChanged(object sender, EventArgs e)
+		{
+			Backend.modDir = tb_modfolder.Text;
 		}
 
 		private void tb_source_TextChanged(object sender, EventArgs e)
@@ -80,6 +109,12 @@ namespace CopyMod
 			if (Backend.CopyContent(extensions.ToArray()))
 			{
 				MessageBox.Show("Content copy successful!");
+				ProcessStartInfo startInfo = new ProcessStartInfo
+				{
+					Arguments = Path.Combine(Backend.sincDir, Backend.modDir),
+					FileName = "explorer.exe"
+				};
+				Process.Start(startInfo);
 			}
 		}
 	}
