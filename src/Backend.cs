@@ -86,6 +86,8 @@ namespace CopyMod
 
 		internal static void DeleteProject(Project project)
 		{
+			if (project == null)
+				return;
 			string floc = Path.Combine(ProjectsPath, project.Name + "." + project.Type.ToString());
 			if (File.Exists(floc))
 				File.Delete(floc);

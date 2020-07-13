@@ -106,6 +106,16 @@ namespace CopyMod
 
 		private void bt_codecopy_Click(object sender, EventArgs e)
 		{
+			if (tb_codename.Text == "")
+			{
+				MessageBox.Show("You didn't select a mod!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (Backend.GetCodeProjects().Find(x => x.Name == tb_codename.Text) == null)
+			{
+				MessageBox.Show("Couldn't find a mod with this name!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			bt_codesave_Click(null, null);
 			if(Backend.GetCodeProjects().Find(x => x.Name == tb_codename.Text).CopyFiles())
 			{
@@ -115,6 +125,16 @@ namespace CopyMod
 
 		private void bt_codedelete_Click(object sender, EventArgs e)
 		{
+			if(tb_codename.Text == "")
+			{
+				MessageBox.Show("You didn't select a mod!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if(Backend.GetCodeProjects().Find(x => x.Name == tb_codename.Text) == null)
+			{
+				MessageBox.Show("Couldn't find a mod with this name!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			if(MessageBox.Show("Do you want to delete the mod project?\nThere won't be deleted any mod files, just the project inside the application.","Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
 				Backend.DeleteProject(Backend.GetCodeProjects().Find(x => x.Name == tb_codename.Text));
@@ -197,6 +217,16 @@ namespace CopyMod
 
 		private void bt_datacopy_Click(object sender, EventArgs e)
 		{
+			if (tb_dataname.Text == "")
+			{
+				MessageBox.Show("You didn't select a mod!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (Backend.GetDataProjects().Find(x => x.Name == tb_dataname.Text) == null)
+			{
+				MessageBox.Show("Couldn't find a mod with this name!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			bt_datasave_Click(null, null);
 			if (Backend.GetDataProjects().Find(x => x.Name == tb_dataname.Text).CopyFiles())
 			{
@@ -220,6 +250,16 @@ namespace CopyMod
 
 		private void bt_datadelete_Click(object sender, EventArgs e)
 		{
+			if (tb_dataname.Text == "")
+			{
+				MessageBox.Show("You didn't select a mod!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (Backend.GetDataProjects().Find(x => x.Name == tb_dataname.Text) == null)
+			{
+				MessageBox.Show("Couldn't find a mod with this name!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			if (MessageBox.Show("Do you want to delete the mod project?\nThere won't be deleted any mod files, just the project inside the application.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
 				Backend.DeleteProject(Backend.GetCodeProjects().Find(x => x.Name == tb_dataname.Text));
