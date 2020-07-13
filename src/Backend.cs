@@ -208,11 +208,18 @@ namespace CopyMod
 
 			internal bool CopyFiles()
 			{
-				string finaldir = "";
 				if (Type == ProjectType.codemod)
-					finaldir = Path.Combine(CodePath, Destination);
+					return CopyCodeFiles();
 				else if (Type == ProjectType.datamod)
-					finaldir = Path.Combine(DataPath, Destination);
+					return CopyDataFiles();
+
+				return false;
+			}
+
+			bool CopyCodeFiles()
+			{
+				string finaldir = Path.Combine(CodePath, Destination);
+
 				if (!Directory.Exists(finaldir))
 					Directory.CreateDirectory(finaldir);
 				var files = (from file in Directory.EnumerateFiles(Source, "*", SearchOption.TopDirectoryOnly)
@@ -227,6 +234,39 @@ namespace CopyMod
 					try
 					{
 						File.Copy(file.Source, file.Destination, Overwrite);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+						return false;
+					}
+				}
+				return true;
+			}
+
+			bool CopyDataFiles()
+			{
+				List<string> filestoignore = new List<string>() { };
+				List<string> directoriestoignore = new List<string>() { };
+
+				string finaldir = Path.Combine(DataPath, Destination);
+				if (!Directory.Exists(finaldir))
+					Directory.CreateDirectory(finaldir);
+				var files = (from file in Directory.EnumerateFiles(Source, "*", SearchOption.AllDirectories)
+							 where FileTypes.Contains(Path.GetExtension(file), StringComparer.InvariantCultureIgnoreCase)
+							 select new
+							 {
+								 Source = file,
+								 Destination = Path.Combine(finaldir, file.Replace(Source,""))
+							 });
+				foreach (var file in files)
+				{
+					try
+					{
+						FileInfo fi = new FileInfo(file.Source);
+						new FileInfo(file.Destination).Directory.Create();
+						if(!filestoignore.Contains(fi.Name) && !directoriestoignore.Contains(fi.Directory.Name))
+							File.Copy(file.Source, file.Destination, Overwrite);
 					}
 					catch (Exception ex)
 					{
