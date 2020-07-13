@@ -55,6 +55,8 @@ namespace CopyMod
 
 		private void lb_codemods_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			if (lb_codemods.SelectedItem == null)
+				return;
 			Backend.Project p = Backend.GetCodeProjects().Find(x => x.Name == (string)lb_codemods.SelectedItem);
 			tb_codename.Text = p.Name;
 			tb_codesource.Text = p.Source;
@@ -117,5 +119,22 @@ namespace CopyMod
 			}
 		}
 
+		private void tb_sincdir_DoubleClick(object sender, EventArgs e)
+		{
+			fbd.RootFolder = Environment.SpecialFolder.Desktop;
+			fbd.ShowNewFolderButton = false;
+			fbd.ShowDialog();
+			if (fbd.SelectedPath != "")
+				tb_sincdir.Text = fbd.SelectedPath;
+		}
+
+		private void tb_codesource_DoubleClick(object sender, EventArgs e)
+		{
+			fbd.RootFolder = Environment.SpecialFolder.MyDocuments;
+			fbd.ShowNewFolderButton = false;
+			fbd.ShowDialog();
+			if (fbd.SelectedPath != "")
+				tb_codesource.Text = fbd.SelectedPath;
+		}
 	}
 }

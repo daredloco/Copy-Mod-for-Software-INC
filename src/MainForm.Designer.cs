@@ -65,6 +65,7 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.label8 = new System.Windows.Forms.Label();
 			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.fbd = new System.Windows.Forms.FolderBrowserDialog();
 			this.tc_main.SuspendLayout();
 			this.tp_data.SuspendLayout();
 			this.tp_code.SuspendLayout();
@@ -120,7 +121,7 @@
 			this.tp_settings.Controls.Add(this.l_sincdir);
 			this.tp_settings.Location = new System.Drawing.Point(4, 25);
 			this.tp_settings.Name = "tp_settings";
-			this.tp_settings.Size = new System.Drawing.Size(792, 421);
+			this.tp_settings.Size = new System.Drawing.Size(583, 391);
 			this.tp_settings.TabIndex = 2;
 			this.tp_settings.Text = "Settings";
 			this.tp_settings.UseVisualStyleBackColor = true;
@@ -141,6 +142,7 @@
 			this.tb_sincdir.Name = "tb_sincdir";
 			this.tb_sincdir.Size = new System.Drawing.Size(360, 22);
 			this.tb_sincdir.TabIndex = 1;
+			this.tb_sincdir.DoubleClick += new System.EventHandler(this.tb_sincdir_DoubleClick);
 			// 
 			// l_sincdir
 			// 
@@ -217,6 +219,7 @@
 			this.tb_codesource.Name = "tb_codesource";
 			this.tb_codesource.Size = new System.Drawing.Size(202, 22);
 			this.tb_codesource.TabIndex = 1;
+			this.tb_codesource.DoubleClick += new System.EventHandler(this.tb_codesource_DoubleClick);
 			// 
 			// cb_codeoverwrite
 			// 
@@ -318,6 +321,7 @@
 			// 
 			// button1
 			// 
+			this.button1.Enabled = false;
 			this.button1.Location = new System.Drawing.Point(6, 26);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(158, 32);
@@ -327,6 +331,7 @@
 			// 
 			// button2
 			// 
+			this.button2.Enabled = false;
 			this.button2.Location = new System.Drawing.Point(5, 140);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(158, 32);
@@ -336,6 +341,7 @@
 			// 
 			// button3
 			// 
+			this.button3.Enabled = false;
 			this.button3.Location = new System.Drawing.Point(5, 64);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(158, 32);
@@ -345,6 +351,7 @@
 			// 
 			// button4
 			// 
+			this.button4.Enabled = false;
 			this.button4.Location = new System.Drawing.Point(5, 102);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(158, 32);
@@ -450,6 +457,10 @@
 			this.listBox1.Size = new System.Drawing.Size(120, 324);
 			this.listBox1.TabIndex = 5;
 			// 
+			// fbd
+			// 
+			this.fbd.RootFolder = System.Environment.SpecialFolder.MyDocuments;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -520,5 +531,6 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.ListBox listBox1;
+		private System.Windows.Forms.FolderBrowserDialog fbd;
 	}
 }

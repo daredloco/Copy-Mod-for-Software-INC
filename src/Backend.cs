@@ -129,7 +129,7 @@ namespace CopyMod
 		{
 			if (SincPath == "")
 			{
-				if (MessageBox.Show("It seems like you didn't set a destination folder,\ndo you want the Application to search the Software INC installation for you?", "Destination Folder", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+				if (MessageBox.Show("It seems like you didn't set the Software Inc folder,\nDo you want the Application to search the Software INC installation for you?", "Destination Folder", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 				{
 					object regreturn = Registry.GetValue(@"HKEY_CURRENT_USER\SOFTWARE\Valve\Steam", "SteamPath", null);
 					if (regreturn != null)
